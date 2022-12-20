@@ -11,13 +11,21 @@ import * as React from 'react';
 import { Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import ModalScreen from '../screens/RootStack/ModalScreen';
+import NotFoundScreen from '../screens/RootStack/NotFoundScreen';
+import FriendsScreen from '../screens/BottomTab/FriendsScreen';
+import StoreScreen from '../screens/BottomTab/StoreScreen';
+import {AuthStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import useTheme from "../hooks/useTheme";
+import AuthHomeScreen from "../screens/Auth/AuthHomeScreen";
+import VerifyNumberScreen from "../screens/Auth/VerifyNumberScreen";
+import UserDetailsScreen from "../screens/Auth/UserDetailsScreen";
+import TutorialScreen from "../screens/Auth/TutorialScreen";
+import PlayScreen from "../screens/BottomTab/PlayScreen";
+import PrizesScreen from "../screens/BottomTab/PrizesScreen";
+import ProfileScreen from "../screens/BottomTab/ProfileScreen";
+import useUser from "../hooks/useUser";
 
 
 export default function Navigation() {
@@ -39,9 +47,11 @@ export default function Navigation() {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const {user} = useUser()
+
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Root" component={user? BottomTabNavigator:AuthStackNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -50,6 +60,22 @@ function RootNavigator() {
   );
 }
 
+const AuthStack = createNativeStackNavigator<AuthStackParamList>()
+
+function AuthStackNavigator() {
+    return(
+        <AuthStack.Navigator initialRouteName={'AuthHome'}>
+            <AuthStack.Screen name={'AuthHome'} component={AuthHomeScreen} />
+            <AuthStack.Screen name={'VerifyNumber'} component={VerifyNumberScreen} />
+            <AuthStack.Screen name={'UserDetails'} component={UserDetailsScreen} />
+            <AuthStack.Group screenOptions={{ presentation: 'modal' }}>
+                <AuthStack.Screen name={'Tutorial'} component={TutorialScreen} />
+            </AuthStack.Group>
+        </AuthStack.Navigator>
+    )
+}
+
+
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
@@ -57,18 +83,19 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+  const {theme} = useTheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Play"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[theme].tint,
+        headerShown: false
       }}>
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        name="Friends"
+        component={FriendsScreen}
+        options={({ navigation }: RootTabScreenProps<'Friends'>) => ({
           title: 'Tab One',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
@@ -80,7 +107,7 @@ function BottomTabNavigator() {
               <FontAwesome
                 name="info-circle"
                 size={25}
-                color={Colors[colorScheme].text}
+                color={Colors[theme].text}
                 style={{ marginRight: 15 }}
               />
             </Pressable>
@@ -88,13 +115,37 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Store"
+        component={StoreScreen}
         options={{
-          title: 'Tab Two',
+          title: 'StoreScreen',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
+      <BottomTab.Screen
+        name={'Play'}
+        component={PlayScreen}
+        options={{
+            title: 'PlayScreen',
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name={'Prizes'}
+        component={PrizesScreen}
+        options={{
+            title: 'Prizes',
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+       />
+       <BottomTab.Screen
+        name={'Profile'}
+        component={ProfileScreen}
+        options={{
+            title: 'ProfileScreen',
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+       />
     </BottomTab.Navigator>
   );
 }
