@@ -10,10 +10,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Pressable } from 'react-native';
 import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/RootStack/ModalScreen';
 import NotFoundScreen from '../screens/RootStack/NotFoundScreen';
-import FriendsScreen from '../screens/BottomTab/FriendsScreen';
 import StoreScreen from '../screens/BottomTab/StoreScreen';
 import {AuthStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -90,13 +88,13 @@ function BottomTabNavigator() {
       initialRouteName="Play"
       screenOptions={{
         tabBarActiveTintColor: Colors[theme].tint,
-        headerShown: false
+        headerShown: false,
       }}>
       <BottomTab.Screen
-        name="Friends"
-        component={FriendsScreen}
-        options={({ navigation }: RootTabScreenProps<'Friends'>) => ({
-          title: 'Tab One',
+        name="Play"
+        component={PlayScreen}
+        options={({ navigation }: RootTabScreenProps<'Play'>) => ({
+          title: 'Igre',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -118,23 +116,15 @@ function BottomTabNavigator() {
         name="Store"
         component={StoreScreen}
         options={{
-          title: 'StoreScreen',
+          title: 'Store',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name={'Play'}
-        component={PlayScreen}
-        options={{
-            title: 'PlayScreen',
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
       <BottomTab.Screen
         name={'Prizes'}
         component={PrizesScreen}
         options={{
-            title: 'Prizes',
+            title: 'Nagrade',
             tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
        />
@@ -142,7 +132,7 @@ function BottomTabNavigator() {
         name={'Profile'}
         component={ProfileScreen}
         options={{
-            title: 'ProfileScreen',
+            title: 'Profil',
             tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
        />

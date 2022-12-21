@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 
 // @ts-ignore
 export const UserContext = React.createContext()
 
 
-const UserContextProvider = ({children}: {children: any}) => {
+const UserContextProvider = ({children}: {children: ReactNode}) => {
     const [user, setUser] = useState<User | null>(null)
 
     return (
