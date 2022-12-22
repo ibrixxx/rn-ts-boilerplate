@@ -3,12 +3,12 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
+import {FontAwesome, FontAwesome5} from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Pressable } from 'react-native';
+import {ColorSchemeName, Pressable} from 'react-native';
 import Colors from '../constants/Colors';
 import ModalScreen from '../screens/RootStack/ModalScreen';
 import NotFoundScreen from '../screens/RootStack/NotFoundScreen';
@@ -24,6 +24,10 @@ import PlayScreen from "../screens/BottomTab/PlayScreen";
 import PrizesScreen from "../screens/BottomTab/PrizesScreen";
 import ProfileScreen from "../screens/BottomTab/ProfileScreen";
 import useUser from "../hooks/useUser";
+import {scale, verticalScale} from "react-native-size-matters";
+import Svg, {Circle, Path} from 'react-native-svg';
+import {BottomTabIconsSvg} from "../constants/SvgIconPaths";
+import QuizScreen from "../screens/RootStack/QuizScreen";
 
 
 export default function Navigation() {
@@ -51,6 +55,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={user? BottomTabNavigator:AuthStackNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Quiz" component={QuizScreen} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -87,15 +92,19 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Play"
       screenOptions={{
-        tabBarActiveTintColor: Colors[theme].tint,
+        tabBarActiveTintColor: Colors[theme].tabIconSelected,
         headerShown: false,
+        tabBarStyle: {
+            borderRadius: scale(20),
+            height: '10%'
+        }
       }}>
       <BottomTab.Screen
         name="Play"
         component={PlayScreen}
         options={({ navigation }: RootTabScreenProps<'Play'>) => ({
           title: 'Igre',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <MyTabBarIcon name="play" color={color} theme={theme}/>,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -117,7 +126,7 @@ function BottomTabNavigator() {
         component={StoreScreen}
         options={{
           title: 'Store',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="store" color={color} size={22} />,
         }}
       />
       <BottomTab.Screen
@@ -125,7 +134,7 @@ function BottomTabNavigator() {
         component={PrizesScreen}
         options={{
             title: 'Nagrade',
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+            tabBarIcon: ({ color }) => <TabBarIcon name="medal" color={color} size={26} />,
         }}
        />
        <BottomTab.Screen
@@ -133,7 +142,7 @@ function BottomTabNavigator() {
         component={ProfileScreen}
         options={{
             title: 'Profil',
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+            tabBarIcon: ({ color }) => <TabBarIcon name="user-alt" color={color} size={26} />,
         }}
        />
     </BottomTab.Navigator>
@@ -144,8 +153,21 @@ function BottomTabNavigator() {
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof FontAwesome5>['name'];
   color: string;
+  size?: number
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome5 size={props.size || 24} style={{marginBottom: verticalScale(-3)}} {...props} />;
+}
+
+function MyTabBarIcon(props: {
+    name: keyof typeof BottomTabIconsSvg;
+    color: string;
+    theme: NonNullable<ColorSchemeName>
+}) {
+    const path = BottomTabIconsSvg[props.name]
+    return <Svg style={{justifyContent: 'center', alignItems: 'center', marginBottom: verticalScale(-3)}} width="26" height="26" viewBox="0 0 24 24">
+            <Circle cx="12" cy="12" r="12" fill={props.color}/>
+            <Path d={path} fill={Colors[props.theme].background} />
+           </Svg>;
 }

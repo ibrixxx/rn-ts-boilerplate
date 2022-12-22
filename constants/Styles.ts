@@ -12,6 +12,11 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    buttonTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'white'
+    },
     separator: {
         marginVertical: 30,
         height: 1,
