@@ -39,9 +39,29 @@ export type AuthStackParamList = {
   Tutorial: undefined;
 }
 
+export type PlayStackParamList = {
+  Main: undefined,
+  Game: undefined
+}
+
+export type StoreStackParamList = {
+  StoreItems: undefined,
+  Balance: undefined
+}
+
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, Screen>,
   NativeStackScreenProps<RootStackParamList>
+>;
+
+export type PlayStackScreenProps<Screen1 extends keyof PlayStackParamList, Screen2 extends keyof RootTabParamList> = CompositeScreenProps<
+    NativeStackScreenProps<PlayStackParamList, Screen1>,
+    CompositeScreenProps<BottomTabScreenProps<RootTabParamList, Screen2>, NativeStackScreenProps<RootStackParamList>>
+>;
+
+export type StoreStackScreenProps<Screen1 extends keyof StoreStackParamList, Screen2 extends keyof RootTabParamList> = CompositeScreenProps<
+    NativeStackScreenProps<StoreStackParamList, Screen1>,
+    CompositeScreenProps<BottomTabScreenProps<RootTabParamList, Screen2>, NativeStackScreenProps<RootStackParamList>>
 >;
 
 export type AuthStackScreenProps<Screen extends keyof AuthStackParamList> = NativeStackScreenProps<

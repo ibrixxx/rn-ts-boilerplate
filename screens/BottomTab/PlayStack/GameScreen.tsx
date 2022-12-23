@@ -1,12 +1,12 @@
-import EditScreenInfo from '../../components/EditScreenInfo';
-import { Text, View } from '../../components/Themed';
-import PrimaryButton from "../../components/PrimaryButton";
-import {styles} from "../../constants/Styles";
-import Colors from "../../constants/Colors";
-import useTheme from "../../hooks/useTheme";
-import {RootTabScreenProps} from "../../types";
+import EditScreenInfo from '../../../components/EditScreenInfo';
+import { Text, View } from '../../../components/Themed';
+import PrimaryButton from "../../../components/PrimaryButton";
+import {styles} from "../../../constants/Styles";
+import Colors from "../../../constants/Colors";
+import useTheme from "../../../hooks/useTheme";
+import {PlayStackScreenProps} from "../../../types";
 
-export default function PlayScreen({navigation}: RootTabScreenProps<'Play'>) {
+export default function GameScreen({navigation}: PlayStackScreenProps<'Game','Play'>) {
     const {theme} = useTheme()
 
     return (

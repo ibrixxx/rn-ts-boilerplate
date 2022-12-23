@@ -12,15 +12,21 @@ import {ColorSchemeName, Pressable} from 'react-native';
 import Colors from '../constants/Colors';
 import ModalScreen from '../screens/RootStack/ModalScreen';
 import NotFoundScreen from '../screens/RootStack/NotFoundScreen';
-import StoreScreen from '../screens/BottomTab/StoreScreen';
-import {AuthStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps} from '../types';
+import StoreScreen from '../screens/BottomTab/StoreStack/StoreScreen';
+import {
+    AuthStackParamList,
+    PlayStackParamList,
+    RootStackParamList,
+    RootTabParamList,
+    RootTabScreenProps, StoreStackParamList
+} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import useTheme from "../hooks/useTheme";
 import AuthHomeScreen from "../screens/Auth/AuthHomeScreen";
 import VerifyNumberScreen from "../screens/Auth/VerifyNumberScreen";
 import UserDetailsScreen from "../screens/Auth/UserDetailsScreen";
 import TutorialScreen from "../screens/Auth/TutorialScreen";
-import PlayScreen from "../screens/BottomTab/PlayScreen";
+import PlayScreen from "../screens/BottomTab/PlayStack/PlayScreen";
 import PrizesScreen from "../screens/BottomTab/PrizesScreen";
 import ProfileScreen from "../screens/BottomTab/ProfileScreen";
 import useUser from "../hooks/useUser";
@@ -28,6 +34,8 @@ import {scale, verticalScale} from "react-native-size-matters";
 import Svg, {Circle, Path} from 'react-native-svg';
 import {BottomTabIconsSvg} from "../constants/SvgIconPaths";
 import QuizScreen from "../screens/RootStack/QuizScreen";
+import GameScreen from "../screens/BottomTab/PlayStack/GameScreen";
+import BalanceScreen from "../screens/BottomTab/StoreStack/BalanceScreen";
 
 
 export default function Navigation() {
@@ -78,6 +86,29 @@ function AuthStackNavigator() {
     )
 }
 
+const PlayStack = createNativeStackNavigator<PlayStackParamList>()
+
+function PlayStackNavigator() {
+    return(
+        <PlayStack.Navigator initialRouteName={'Main'}>
+            <PlayStack.Screen name={'Main'} component={PlayScreen} />
+            <PlayStack.Screen name={'Game'} component={GameScreen} />
+        </PlayStack.Navigator>
+    )
+}
+
+
+const StoreStack = createNativeStackNavigator<StoreStackParamList>()
+
+function StoreStackNavigator() {
+    return(
+        <StoreStack.Navigator initialRouteName={'StoreItems'}>
+            <StoreStack.Screen name={'StoreItems'} component={StoreScreen} />
+            <StoreStack.Screen name={'Balance'} component={BalanceScreen} />
+        </StoreStack.Navigator>
+    )
+}
+
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -101,7 +132,7 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Screen
         name="Play"
-        component={PlayScreen}
+        component={PlayStackNavigator}
         options={({ navigation }: RootTabScreenProps<'Play'>) => ({
           title: 'Igre',
           tabBarIcon: ({ color }) => <MyTabBarIcon name="play" color={color} theme={theme}/>,
@@ -123,7 +154,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Store"
-        component={StoreScreen}
+        component={StoreStackNavigator}
         options={{
           title: 'Store',
           tabBarIcon: ({ color }) => <TabBarIcon name="store" color={color} size={22} />,
