@@ -15,6 +15,7 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
+          Tutorial: 'test',
           Play: {
             screens: {
               PlayScreen: 'one',
@@ -29,6 +30,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       },
       Modal: 'modal',
       NotFound: '*',
+      Quiz: 'quiz'
     },
   },
 };

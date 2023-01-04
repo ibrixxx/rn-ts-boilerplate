@@ -1,5 +1,6 @@
 import {StyleSheet} from "react-native";
 import {scale} from "react-native-size-matters";
+import Layout from "./Layout";
 
 export const styles = StyleSheet.create({
     container: {
@@ -46,5 +47,10 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         padding: scale(18),
         borderWidth: scale(2.5),
+    },
+    video: {
+        width: Layout.window.width,
+        height: '100%',
+        // transform: [{ rotate: '90deg' }]
     }
 });
