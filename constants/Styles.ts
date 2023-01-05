@@ -51,6 +51,6 @@ export const styles = StyleSheet.create({
     video: {
         width: Layout.window.width,
         height: '100%',
-        // transform: [{ rotate: '90deg' }]
+        transform: [{ rotate: '90deg' }]
     }
 });
