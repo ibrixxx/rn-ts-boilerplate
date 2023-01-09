@@ -9,6 +9,12 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: scale(29)
     },
+    liveContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: scale(14)
+    },
     title: {
         fontSize: 16,
         fontWeight: 'bold',
