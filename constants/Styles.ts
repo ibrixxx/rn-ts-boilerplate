@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {scale} from "react-native-size-matters";
+import {scale, verticalScale} from "react-native-size-matters";
 import Layout from "./Layout";
 
 export const styles = StyleSheet.create({
@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingHorizontal: scale(14)
+        paddingHorizontal: scale(14),
     },
     title: {
         fontSize: 16,
